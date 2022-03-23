@@ -5,7 +5,7 @@
  *
  */
 
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
 import { ROWS_PER_PAGE_DEFAULT } from 'utils/constants';

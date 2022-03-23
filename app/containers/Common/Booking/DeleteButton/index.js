@@ -13,7 +13,7 @@ import { useInjectReducer } from 'utils/injectReducer';
 import { useInjectSaga } from 'utils/injectSaga';
 import { DAEMON } from 'utils/constants';
 import { useIntl } from 'react-intl';
-import { generatePath, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import paths from 'utils/paths';
 
 import Button from '@mui/material/Button';

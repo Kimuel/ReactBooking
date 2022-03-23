@@ -14,6 +14,12 @@ const makeSelectBookingList = () =>
   createSelector(selectBookingList, (state) => state.bookingList);
 
 /**
+ * Select data
+ */
+const makeSelectBookingRooms = () =>
+  createSelector(selectBookingList, (state) => state.rooms);
+
+/**
  * Select loading
  */
 const makeSelectBookingListLoading = () =>
@@ -22,5 +28,6 @@ const makeSelectBookingListLoading = () =>
 export {
   selectBookingList,
   makeSelectBookingList,
+  makeSelectBookingRooms,
   makeSelectBookingListLoading,
 };

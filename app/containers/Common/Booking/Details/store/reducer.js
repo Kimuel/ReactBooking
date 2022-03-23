@@ -14,31 +14,8 @@ import {
 } from './constants';
 
 export const initialState = {
-  bookingDetails: {
-    id: null,
-    details: {
-      orderId: '',
-      date: null,
-      orderStatus: 0,
-      orderFrom: '',
-    },
-    customer: {
-      fname: '',
-      lname: '',
-      email: '',
-      phone: '',
-      country: '',
-    },
-    paymentInfo: {
-      tender: '',
-      transactionIds: [],
-      totalAmount: 0,
-    },
-  },
-  bookingItems: [],
+  bookingDetails: {},
   loading: false,
-  loadingItems: false,
-  statusCode: null,
 };
 
 export const BookingDetailsPropTypes = {
@@ -71,19 +48,7 @@ export const BookingDetailsPropTypes = {
       totalAmount: PropTypes.number,
     }),
   }),
-  bookingItems: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.number,
-      image: PropTypes.string,
-      name: PropTypes.string,
-      qty: PropTypes.number,
-      variations: PropTypes.arrayOf(PropTypes.object),
-      price: PropTypes.number,
-    }),
-  ),
   loading: PropTypes.bool,
-  loadingItems: PropTypes.bool,
-  statusCode: PropTypes.number,
 };
 
 /* eslint-disable default-case, no-param-reassign, default-param-last */

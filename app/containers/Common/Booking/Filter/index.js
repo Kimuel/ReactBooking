@@ -33,7 +33,7 @@ import { BookingListPropTypes } from '../List/store/reducer';
 import messages from './messages';
 
 const BookingFilter = ({
-  data,
+  rooms,
   filterBy,
   filterValue,
   onClearFilter,
@@ -112,17 +112,6 @@ const BookingFilter = ({
     return intl.formatMessage(messages.filterMenuNone);
   };
 
-  const getUniqueItems = useCallback(
-    () =>
-      data.reduce((newList, current) => {
-        if (!newList.some((x) => x.roomId === current.roomId)) {
-          newList.push(current);
-        }
-        return newList;
-      }, []),
-    [data],
-  );
-
   return (
     <Grid container alignItems="center" spacing={2}>
       <Grid item xs={12} sm={6} md={4}>
@@ -183,13 +172,22 @@ const BookingFilter = ({
                   horizontal: 'left',
                 }}
               >
-                <MenuItem onClick={() => handleMenuClick(bookingFilter.NONE)}>
+                <MenuItem
+                  selected={initialfilterBy === bookingFilter.NONE}
+                  onClick={() => handleMenuClick(bookingFilter.NONE)}
+                >
                   {intl.formatMessage(messages.filterMenuNone)}
                 </MenuItem>
-                <MenuItem onClick={() => handleMenuClick(bookingFilter.ROOM)}>
+                <MenuItem
+                  selected={initialfilterBy === bookingFilter.ROOM}
+                  onClick={() => handleMenuClick(bookingFilter.ROOM)}
+                >
                   {intl.formatMessage(messages.filterMenuRoom)}
                 </MenuItem>
-                <MenuItem onClick={() => handleMenuClick(bookingFilter.DATE)}>
+                <MenuItem
+                  selected={initialfilterBy === bookingFilter.DATE}
+                  onClick={() => handleMenuClick(bookingFilter.DATE)}
+                >
                   {intl.formatMessage(messages.filterMenuDate)}
                 </MenuItem>
               </Menu>
@@ -227,12 +225,9 @@ const BookingFilter = ({
                     setInitialFilterByValue(event.target.value)
                   }
                 >
-                  {getUniqueItems().map((item) => (
-                    <MenuItem
-                      key={item.roomName}
-                      value={item?.roomId?.toString()}
-                    >
-                      {item.roomName}
+                  {rooms.map((item) => (
+                    <MenuItem key={item.name} value={item.id?.toString()}>
+                      {item.name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -260,7 +255,7 @@ const BookingFilter = ({
 };
 
 BookingFilter.propTypes = {
-  data: BookingListPropTypes.bookingList,
+  rooms: BookingListPropTypes.rooms,
   onClearFilter: PropTypes.func,
   search: PropTypes.string,
   filterBy: PropTypes.string,

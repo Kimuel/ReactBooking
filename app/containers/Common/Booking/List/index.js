@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate, generatePath } from 'react-router-dom';
 import { useIntl } from 'react-intl';
 import moment from 'moment';
 import { useInjectReducer } from 'utils/injectReducer';
@@ -22,11 +22,13 @@ import {
 } from 'utils/constants';
 import { sortList, getComparator } from 'helpers/sortHelper';
 import { bookingFilter } from 'enums/booking.enum';
+import paths from 'utils/paths';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 import Card from '@mui/material/Card';
+import Chip from '@mui/material/Chip';
 import IconButton from '@mui/material/IconButton';
 
 import SectionContainer from 'components/Container/Section';
@@ -41,6 +43,7 @@ import KEY from './store/constants';
 import { loadBookingList } from './store/actions';
 import {
   makeSelectBookingList,
+  makeSelectBookingRooms,
   makeSelectBookingListLoading,
 } from './store/selectors';
 import BookingListReducer, {
@@ -50,7 +53,12 @@ import BookingListReducer, {
 import BookingListSaga from './store/saga';
 import messages from './messages';
 
-const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
+const BookingList = ({
+  actionLoadBookingList,
+  bookingList,
+  rooms,
+  loading,
+}) => {
   useInjectReducer({ key: KEY, reducer: BookingListReducer });
   useInjectSaga({ key: KEY, saga: BookingListSaga, mode: DAEMON });
   const navigate = useNavigate();
@@ -186,7 +194,12 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
       },
       {
         Header: intl.formatMessage(messages.tableRoomName),
-        accessor: 'roomName',
+        accessor: 'roomId',
+        Cell: ({
+          row: {
+            values: { roomId },
+          },
+        }) => rooms.find((item) => item.id === roomId)?.name || '',
         minWidth: 150,
       },
       {
@@ -196,7 +209,15 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
       },
       {
         Header: intl.formatMessage(messages.tableGuestName),
-        accessor: 'guestName',
+        accessor: 'guestsName',
+        Cell: ({
+          row: {
+            values: { guestsName },
+          },
+        }) =>
+          guestsName.map((guest) => (
+            <Chip key={guest} label={guest} color="default" />
+          )),
         minWidth: 150,
       },
       {
@@ -240,7 +261,12 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
           useCallback(
             <>
               <Tooltip title={intl.formatMessage(messages.tableActionsEdit)}>
-                <IconButton LinkComponent={Link}>
+                <IconButton
+                  to={generatePath(paths.bookingDetails, {
+                    id,
+                  })}
+                  LinkComponent={Link}
+                >
                   <EditIcon />
                 </IconButton>
               </Tooltip>
@@ -259,7 +285,7 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
         minWidth: 120,
       },
     ],
-    [moment],
+    [moment, rooms],
   );
 
   const getConstructedData = useCallback(() => {
@@ -284,10 +310,13 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
 
     if (search) {
       const regSearch = new RegExp(search, 'gi');
-      listData = listData.filter(
-        (item) =>
-          regSearch.test(item.roomName) || regSearch.test(item.guestName),
-      );
+      listData = listData.filter((item) => {
+        const roomObj = rooms.find((room) => regSearch.test(room.name));
+        return (
+          (roomObj && roomObj.id === item.roomId) ||
+          regSearch.test(item.guestsName)
+        );
+      });
     }
 
     return sortList(listData, getComparator(sortDir, sortBy)).slice(
@@ -302,6 +331,7 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
     sortDir,
     filterBy,
     filterValue,
+    rooms,
     initialBookingList,
   ]);
 
@@ -309,6 +339,7 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
     <Card elevation={0}>
       <SectionContainer sx={{ pt: 2 }}>
         <BookingFilter
+          rooms={rooms}
           data={initialBookingList}
           filterValue={filterValue}
           filterBy={filterBy}
@@ -352,11 +383,13 @@ const BookingList = ({ actionLoadBookingList, bookingList, loading }) => {
 BookingList.propTypes = {
   actionLoadBookingList: PropTypes.func,
   bookingList: BookingListPropTypes.bookingList,
+  rooms: BookingListPropTypes.rooms,
   loading: BookingListPropTypes.loading,
 };
 
 const mapStateToProps = createStructuredSelector({
   bookingList: makeSelectBookingList(),
+  rooms: makeSelectBookingRooms(),
   loading: makeSelectBookingListLoading(),
 });
 

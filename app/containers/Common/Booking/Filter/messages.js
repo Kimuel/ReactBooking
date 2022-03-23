@@ -1,8 +1,11 @@
 /**
+ *
  * Messages
  *
- * This contains all the text for the container.
+ * This contains all the text for this module.
+ *
  */
+
 import { defineMessages } from 'react-intl';
 
 export const scope = 'app.containers.common.Orders.Details';

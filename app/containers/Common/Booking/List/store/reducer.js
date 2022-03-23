@@ -6,17 +6,12 @@
 
 import produce from 'immer';
 import PropTypes from 'prop-types';
-import { ROWS_PER_PAGE_DEFAULT } from 'utils/constants';
 
 import { UPDATE_BOOKING_LIST_FIELD, RESET_BOOKING_LIST } from './constants';
 
 export const initialState = {
   bookingList: [],
-  pagination: {
-    currentPage: 1,
-    totalItems: 0,
-    itemsPerPage: ROWS_PER_PAGE_DEFAULT,
-  },
+  rooms: [],
   loading: false,
 };
 
@@ -25,20 +20,19 @@ export const BookingListPropTypes = {
     PropTypes.shape({
       id: PropTypes.number,
       roomId: PropTypes.number,
-      roomName: PropTypes.string,
       hostName: PropTypes.string,
-      guestName: PropTypes.string,
+      guestsName: PropTypes.arrayOf(PropTypes.string),
       bookingDate: PropTypes.any,
       bookingTimeStart: PropTypes.any,
       bookingTimeEnd: PropTypes.any,
     }),
   ),
-  pagination: PropTypes.shape({
-    currentPage: PropTypes.number,
-    totalItems: PropTypes.number,
-    itemsPerPage: PropTypes.number,
-  }),
-
+  rooms: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string,
+    }),
+  ),
   loading: PropTypes.bool,
 };
 
