@@ -38,8 +38,8 @@ File Structure
     - .eslintrc.js
 
 Mock Data
-    - app/json/schedules.json
-    - app/json/rooms.json
+  - app/json/schedules.json
+  - app/json/rooms.json
 
 How to run:
   - npm install
