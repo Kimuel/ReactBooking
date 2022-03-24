@@ -11,10 +11,11 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-const Header = ({ action, title, disableGutters, ...rest }) => (
+const Header = ({ action, title, menu, disableGutters, ...rest }) => (
   <AppBar {...rest}>
     <Toolbar disableGutters={disableGutters}>
       <>
+        {menu}
         {title && (
           <Typography sx={{ flex: 1 }} variant="h5">
             {title}
@@ -31,6 +32,11 @@ Header.defaultProps = {
 };
 
 Header.propTypes = {
+  menu: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+    PropTypes.element,
+  ]),
   action: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

@@ -10,39 +10,28 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { useIntl, FormattedMessage } from 'react-intl';
 import * as yup from 'yup';
 import moment from 'moment';
+import { DATETIME_FORMAT } from 'utils/constants';
 
 import AdapterMoment from '@mui/lab/AdapterMoment';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DatePicker from '@mui/lab/DatePicker';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
 
 import TextField from 'components/Mui/TextField';
 
-// import { keyBookingSpecialPriceActive } from 'containers/Common/Fields/Booking/SpecialPriceActive';
-// import { keyBookingSpecialPriceTo } from 'containers/Common/Fields/Booking/SpecialPriceTo';
+import { keyBookingDate } from 'containers/Common/Fields/Booking/Date';
 
 import messages from './messages';
 
-export const keyBookingTimeFrom = 'keyBookingTimeFrom';
+export const keyBookingTimeFrom = 'timeStart';
 export const schemaBookingTimeFrom = yup
   .date()
   .nullable()
-  .when('product-special-price-active', {
-    is: true,
-    then: yup
-      .date()
-      .nullable()
-      .required(<FormattedMessage {...messages.validationRequired} />),
-  })
-  .when('product-special-price-to', (specialPriceTo, schema) =>
-    specialPriceTo && moment(specialPriceTo).isValid()
-      ? schema.max(specialPriceTo)
-      : schema,
-  );
+  .required(<FormattedMessage {...messages.validationRequired} />);
 
 export const FieldBookingTimeFrom = ({ DatePickerProps, ...rest }) => {
   const intl = useIntl();
   const { control, setValue, getValues } = useFormContext();
-  const dateTo = getValues('product-special-price-to');
+  const bookingDate = getValues(keyBookingDate);
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -50,20 +39,27 @@ export const FieldBookingTimeFrom = ({ DatePickerProps, ...rest }) => {
         control={control}
         name={keyBookingTimeFrom}
         render={({ field: { value }, fieldState: { error } }) => (
-          <DatePicker
+          <MobileTimePicker
             label={intl.formatMessage(messages.label)}
-            inputFormat="MM/DD/yyyy"
+            ampm
+            inputFormat="hh:mm A"
             value={value}
             onChange={(val) => {
-              setValue(keyBookingTimeFrom, val?.utc().format(), {
+              const newValue = moment(
+                `${moment(bookingDate).format('YYYY-MM-DD')}T${val.format(
+                  'HH:mm:ss',
+                )}`,
+              ).format(DATETIME_FORMAT);
+              setValue(keyBookingTimeFrom, newValue, {
                 shouldValidate: true,
                 shouldDirty: true,
               });
             }}
-            maxDate={dateTo && moment(dateTo)}
+            minutesStep={5}
+            minTime={moment(new Date(0, 0, 0, 8))}
+            maxTime={moment(new Date(0, 0, 0, 17))}
             renderInput={(params) => (
               <TextField
-                type="date"
                 fullWidth
                 required
                 {...params}

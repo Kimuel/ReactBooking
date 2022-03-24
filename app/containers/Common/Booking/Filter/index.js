@@ -4,7 +4,7 @@
  *
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useIntl } from 'react-intl';
@@ -83,8 +83,13 @@ const BookingFilter = ({
 
   const handleFilter = () => {
     const urlParams = new URLSearchParams(location.search);
-    urlParams.set('filterBy', initialfilterBy);
-    urlParams.set('filterValue', initialfilterValue);
+    if (initialfilterBy === bookingFilter.NONE) {
+      urlParams.delete('filterBy');
+      urlParams.delete('filterValue');
+    } else {
+      urlParams.set('filterBy', initialfilterBy);
+      urlParams.set('filterValue', initialfilterValue);
+    }
     navigate({
       pathname: location.pathname,
       search: `?${urlParams}`,
@@ -118,8 +123,9 @@ const BookingFilter = ({
         <Box sx={{ px: 2 }}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <TextField
-              placeholder="Search Item"
+              placeholder={intl.formatMessage(messages.searchPlaceholder)}
               size="small"
+              value={initialSearch}
               fullWidth
               onChange={(e) => setInitialSearch(e.target.value)}
             />

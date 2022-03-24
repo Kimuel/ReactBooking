@@ -1,6 +1,6 @@
 /**
  *
- * BookingList
+ * BookingRoom
  *
  */
 
@@ -22,38 +22,42 @@ import {
 } from 'utils/constants';
 import { styled } from '@mui/system';
 import { sortList, getComparator } from 'helpers/sortHelper';
-import { bookingFilter, bookingDuration } from 'enums/booking.enum';
+import { bookingDuration } from 'enums/booking.enum';
 import paths from 'utils/paths';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 
+import Avatar from '@mui/material/Avatar';
 import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Chip from '@mui/material/Chip';
+import Grid from '@mui/material/Grid';
 import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 import SectionContainer from 'components/Container/Section';
 import Table from 'components/Table';
 import TablePagination from 'components/Mui/TablePagination';
 import Tooltip from 'components/Mui/Tooltip';
 
-import BookingFilter from 'containers/Common/Booking/Filter/Loadable';
 import BookingDeleteButton from 'containers/Common/Booking/DeleteButton/Loadable';
 
-import KEY from './store/constants';
-import { loadBookingList } from './store/actions';
+import img from 'images/meeting-room.jpg';
+
+import KEY from '../List/store/constants';
+import { loadBookingList } from '../List/store/actions';
 import {
   makeSelectBookingList,
   makeSelectBookingRooms,
   makeSelectBookingListLoading,
-} from './store/selectors';
+} from '../List/store/selectors';
 import BookingListReducer, {
   BookingListPropTypes,
   initialState,
-} from './store/reducer';
-import BookingListSaga from './store/saga';
+} from '../List/store/reducer';
+import BookingListSaga from '../List/store/saga';
 import messages from './messages';
 
 const StackItem = styled('div')(({ theme }) => ({
@@ -61,9 +65,10 @@ const StackItem = styled('div')(({ theme }) => ({
   marginBottom: theme.spacing(0.5),
 }));
 
-const BookingList = ({
+const BookingRoom = ({
   actionLoadBookingList,
   bookingList,
+  roomName,
   rooms,
   loading,
 }) => {
@@ -147,18 +152,6 @@ const BookingList = ({
     [location],
   );
 
-  // onClearAllFilter callback
-  const handleClearFilter = useCallback(() => {
-    const urlParams = new URLSearchParams(location.search);
-    urlParams.delete('filterBy');
-    urlParams.delete('filterValue');
-    urlParams.delete('search');
-    navigate({
-      pathname: location.pathname,
-      search: `?${urlParams}`,
-    });
-  }, [location]);
-
   // get current page
   const currentPage = useMemo(() => {
     const curPage = new URLSearchParams(location.search).get('page');
@@ -183,31 +176,13 @@ const BookingList = ({
 
   // get sort by
   const sortBy = useMemo(
-    () => new URLSearchParams(location.search).get('sortBy'),
+    () => new URLSearchParams(location.search).get('sortBy') || 'bookingDate',
     [location],
   );
 
   // get sort direction
   const sortDir = useMemo(
-    () => new URLSearchParams(location.search).get('sortDir'),
-    [location],
-  );
-
-  // get filter by
-  const filterBy = useMemo(
-    () => new URLSearchParams(location.search).get('filterBy'),
-    [location],
-  );
-
-  // get filter value
-  const filterValue = useMemo(
-    () => new URLSearchParams(location.search).get('filterValue'),
-    [location],
-  );
-
-  // get search value
-  const search = useMemo(
-    () => new URLSearchParams(location.search).get('search') || '',
+    () => new URLSearchParams(location.search).get('sortDir') || 'asc',
     [location],
   );
 
@@ -254,7 +229,7 @@ const BookingList = ({
             ),
             [],
           ),
-        minWidth: 230,
+        minWidth: 250,
       },
       {
         Header: intl.formatMessage(messages.tableDateOfBooking),
@@ -264,7 +239,7 @@ const BookingList = ({
             values: { bookingDate },
           },
         }) => moment(bookingDate).format(DATE_FORMAT),
-        minWidth: 150,
+        minWidth: 170,
       },
       {
         Header: intl.formatMessage(messages.tableTimeStart),
@@ -297,21 +272,11 @@ const BookingList = ({
         disableSortBy: true,
         Cell: ({
           row: {
-            values: { id, roomId },
+            values: { id },
           },
         }) =>
           useCallback(
             <>
-              <Tooltip title={intl.formatMessage(messages.tableActionsView)}>
-                <IconButton
-                  to={generatePath(paths.bookingRoom, {
-                    id: roomId,
-                  })}
-                  LinkComponent={Link}
-                >
-                  <VisibilityIcon />
-                </IconButton>
-              </Tooltip>
               <Tooltip title={intl.formatMessage(messages.tableActionsEdit)}>
                 <IconButton
                   to={generatePath(paths.bookingDetails, {
@@ -334,7 +299,7 @@ const BookingList = ({
             </>,
             [],
           ),
-        minWidth: 150,
+        minWidth: 120,
       },
     ],
     [moment, rooms],
@@ -344,62 +309,39 @@ const BookingList = ({
   const getConstructedData = useCallback(() => {
     const endIndex = currentPage * rowsPerPage;
     const startIndex = endIndex - rowsPerPage;
-    let listData = initialBookingList;
 
-    if (filterBy && filterBy !== bookingFilter.NONE && filterValue) {
-      listData = listData.filter((item) => {
-        if (filterBy === bookingFilter.ROOM) {
-          return item[filterBy] && item[filterBy] === parseInt(filterValue, 10);
-        }
-        if (filterBy === bookingFilter.DATE) {
-          return (
-            item[filterBy] &&
-            moment(item[filterBy]).format(DATE_FORMAT) === filterValue
-          );
-        }
-        return true;
-      });
-    }
-
-    if (search) {
-      const regSearch = new RegExp(search, 'gi');
-      listData = listData.filter((item) => {
-        const roomObj = rooms.find((room) => regSearch.test(room.name));
-        return (
-          (roomObj && roomObj.id === item.roomId) ||
-          regSearch.test(item.guestsName)
-        );
-      });
-    }
-
-    return sortList(listData, getComparator(sortDir, sortBy)).slice(
+    return sortList(initialBookingList, getComparator(sortDir, sortBy)).slice(
       startIndex,
       endIndex,
     );
-  }, [
-    currentPage,
-    rowsPerPage,
-    search,
-    sortBy,
-    sortDir,
-    filterBy,
-    filterValue,
-    rooms,
-    initialBookingList,
-  ]);
+  }, [currentPage, rowsPerPage, sortBy, sortDir, rooms, initialBookingList]);
 
   return (
     <Card elevation={0}>
-      <SectionContainer sx={{ pt: 2 }}>
-        <BookingFilter
-          rooms={rooms}
-          data={initialBookingList}
-          filterValue={filterValue}
-          filterBy={filterBy}
-          search={search}
-          onClearFilter={handleClearFilter}
-        />
-      </SectionContainer>
+      <CardContent>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={5}>
+            <Avatar
+              variant="rounded"
+              sx={{ width: '100%', height: 'auto' }}
+              src={img}
+            />
+          </Grid>
+          <Grid item xs={12} md={7}>
+            <SectionContainer>
+              <Typography variant="h4">{roomName}</Typography>
+            </SectionContainer>
+            <SectionContainer>
+              <Typography>
+                Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem Ipsum has been the industry`s standard dummy
+                text ever since the 1500s, when an unknown printer took a galley
+                of type and scrambled it to make a type specimen book.
+              </Typography>
+            </SectionContainer>
+          </Grid>
+        </Grid>
+      </CardContent>
 
       <Table
         currentPage={currentPage}
@@ -408,7 +350,7 @@ const BookingList = ({
           columns,
           data: getConstructedData(),
           initialState: {
-            hiddenColumns: ['id'],
+            hiddenColumns: ['id', 'roomId'],
             sortBy: [{ id: sortBy, desc: sortDir === 'desc' }],
           },
         }}
@@ -433,7 +375,8 @@ const BookingList = ({
   );
 };
 
-BookingList.propTypes = {
+BookingRoom.propTypes = {
+  roomName: PropTypes.string,
   actionLoadBookingList: PropTypes.func,
   bookingList: BookingListPropTypes.bookingList,
   rooms: BookingListPropTypes.rooms,
@@ -454,4 +397,4 @@ function mapDispatchToProps(dispatch) {
 
 const withConnect = connect(mapStateToProps, mapDispatchToProps);
 
-export default compose(withConnect)(BookingList);
+export default compose(withConnect)(BookingRoom);

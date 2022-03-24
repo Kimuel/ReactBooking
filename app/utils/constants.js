@@ -9,3 +9,4 @@ export const ROWS_PER_PAGE_DEFAULT = 5;
 
 export const DATE_FORMAT = 'YYYY-MM-DD';
 export const TIME_FORMAT = 'hh:mm A';
+export const DATETIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';

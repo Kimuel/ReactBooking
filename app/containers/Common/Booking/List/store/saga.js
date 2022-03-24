@@ -5,6 +5,7 @@
  */
 
 import { takeLatest, put, all, delay } from 'redux-saga/effects';
+import { bookingDuration } from 'enums/booking.enum';
 
 import { updateBookingListField } from './actions';
 import { LOAD_BOOKING_LIST } from './constants';
@@ -37,7 +38,7 @@ const rooms = [
   },
 ];
 
-const bookingList = Array(100)
+const bookingList = Array(10)
   .fill()
   .map((_item, index) => {
     const id = index + 1;
@@ -46,9 +47,9 @@ const bookingList = Array(100)
       roomId: randomIntFromInterval(1, 5),
       hostName: `Host ${id}`,
       guestsName: [`Guest ${id}`],
-      bookingDate: '2022-03-23T00:00:00Z',
-      bookingTimeStart: '2022-03-23T01:32:00Z',
-      bookingTimeEnd: '2022-03-23T05:32:00Z',
+      bookingDate: '2022-03-23T00:00:00',
+      bookingTimeStart: '2022-03-23T09:30:00',
+      duration: bookingDuration.HOUR,
     };
   });
 

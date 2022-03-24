@@ -191,10 +191,6 @@ export const baseLight = {
   palette: {
     mode: 'light',
     primary: {
-      // light: '#333333',
-      // main: '#161A1D',
-      // dark: '#0f1214',
-      // contrastText: '#fff',
       light: '#93b8b8',
       main: '#79A7A7',
       dark: '#547474',
@@ -216,46 +212,6 @@ export const baseLight = {
       default: '#F0F2F5',
       paper: '#FAFAFA',
       navigation: '#000',
-    },
-  },
-  typography: base.typography,
-  shape: base.shape,
-  overrides: base.overrides,
-  components: {
-    ...base.components,
-  },
-};
-
-export const baseDark = {
-  palette: {
-    mode: 'dark',
-    primary: {
-      light: '#33ab9f',
-      main: '#009688',
-      dark: '#00695f',
-      contrastText: '#fff',
-    },
-    error: {
-      light: '#d88493',
-      main: '#CF6679',
-      dark: '#904754',
-      contrastText: '#fff',
-    },
-    text: {
-      primary: '#E0E0E0',
-      secondary: '#A0A0A0',
-      tertiary: '#6C6C6C',
-      icon: 'rgba(255, 255, 255, 0.5)',
-    },
-    background: {
-      default: '#121212',
-      paper: '#272727',
-      navigation: '#1E1E1E',
-      level1: '#121212',
-      level2: '#1E1E1E',
-      level3: '#242424',
-      level4: '#2C2C2C',
-      level5: '#323232',
     },
   },
   typography: base.typography,

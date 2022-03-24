@@ -1,6 +1,6 @@
 /**
  *
- * FieldBookingRoomName
+ * FieldBookingRoom
  *
  */
 
@@ -26,12 +26,12 @@ import BookingListReducer, {
 
 import messages from './messages';
 
-export const keyBookingRoomName = 'roomName';
-export const schemaBookingRoomName = yup
+export const keyBookingRoom = 'roomId';
+export const schemaBookingRoom = yup
   .number()
   .typeError(<FormattedMessage {...messages.validationRequired} />);
 
-export const FieldBookingRoomName = ({ rooms, ...rest }) => {
+export const FieldBookingRoom = ({ rooms, ...rest }) => {
   useInjectReducer({ key: KEY, reducer: BookingListReducer });
   const intl = useIntl();
   const { control } = useFormContext();
@@ -39,12 +39,12 @@ export const FieldBookingRoomName = ({ rooms, ...rest }) => {
   return (
     <Controller
       control={control}
-      name={keyBookingRoomName}
+      name={keyBookingRoom}
       render={({ field: { onChange, value }, fieldState: { error } }) => (
         <Select
-          id={keyBookingRoomName}
-          value={value}
-          name={keyBookingRoomName}
+          id={keyBookingRoom}
+          value={value || ''}
+          name={keyBookingRoom}
           required
           label={intl.formatMessage(messages.label)}
           onChange={onChange}
@@ -63,7 +63,7 @@ export const FieldBookingRoomName = ({ rooms, ...rest }) => {
   );
 };
 
-FieldBookingRoomName.propTypes = {
+FieldBookingRoom.propTypes = {
   rooms: BookingListPropTypes.rooms,
 };
 
@@ -73,4 +73,4 @@ const mapStateToProps = createStructuredSelector({
 
 const withConnect = connect(mapStateToProps, null);
 
-export default compose(withConnect)(FieldBookingRoomName);
+export default compose(withConnect)(FieldBookingRoom);

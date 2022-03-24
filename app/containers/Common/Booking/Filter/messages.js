@@ -47,4 +47,8 @@ export default defineMessages({
     id: `${scope}.datepickerLabel`,
     defaultMessage: 'Datepicker',
   },
+  searchPlaceholder: {
+    id: `${scope}.searchPlaceholder`,
+    defaultMessage: 'Search Room/Guests',
+  },
 });

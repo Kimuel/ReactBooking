@@ -14,7 +14,7 @@ import TextField from 'components/Mui/TextField';
 
 import messages from './messages';
 
-export const keyBookingHostName = 'bookingHostName';
+export const keyBookingHostName = 'hostName';
 export const schemaBookingHostName = yup
   .string()
   .required(<FormattedMessage {...messages.validationRequired} />);

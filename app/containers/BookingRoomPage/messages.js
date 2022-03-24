@@ -8,12 +8,12 @@
 
 import { defineMessages } from 'react-intl';
 
-export const scope = 'app.containers.BookingListPage';
+export const scope = 'app.containers.BookingRoomPage';
 
 export default defineMessages({
   headerTitle: {
     id: `${scope}.headerTitle`,
-    defaultMessage: 'Booking List',
+    defaultMessage: 'Room',
   },
   btnNewBooking: {
     id: `${scope}.btnNewBooking`,

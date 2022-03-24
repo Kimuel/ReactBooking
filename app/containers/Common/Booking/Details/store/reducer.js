@@ -7,6 +7,7 @@
 import produce from 'immer';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { bookingDuration } from 'enums/booking.enum';
 
 import {
   UPDATE_BOOKING_DETAILS_FIELD,
@@ -14,39 +15,30 @@ import {
 } from './constants';
 
 export const initialState = {
-  bookingDetails: {},
+  bookingDetails: {
+    id: null,
+    roomId: null,
+    hostName: '',
+    guestsName: [],
+    date: moment().format(),
+    timeStart: moment().set({ hour: 8, minute: 0 }).format(),
+    duration: bookingDuration.HALF_HOUR,
+  },
   loading: false,
 };
 
 export const BookingDetailsPropTypes = {
   bookingDetails: PropTypes.shape({
     id: PropTypes.number,
-    details: PropTypes.shape({
-      orderId: PropTypes.any,
-      date: PropTypes.oneOfType([
-        PropTypes.instanceOf(Date),
-        PropTypes.instanceOf(moment),
-      ]),
-      orderStatus: PropTypes.number,
-      orderFrom: PropTypes.string,
-    }),
-    customer: PropTypes.shape({
-      fname: PropTypes.string,
-      lname: PropTypes.string,
-      email: PropTypes.string,
-      phone: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      country: PropTypes.string,
-    }),
-    paymentInfo: PropTypes.shape({
-      tender: PropTypes.string,
-      transactionIds: PropTypes.arrayOf(
-        PropTypes.shape({
-          id: PropTypes.number,
-          transactionId: PropTypes.string,
-        }),
-      ),
-      totalAmount: PropTypes.number,
-    }),
+    roomId: PropTypes.number,
+    hostName: PropTypes.string,
+    guestsName: PropTypes.arrayOf(PropTypes.string),
+    date: PropTypes.any,
+    timeStart: PropTypes.any,
+    duration: PropTypes.oneOf([
+      bookingDuration.HALF_HOUR,
+      bookingDuration.HOUR,
+    ]),
   }),
   loading: PropTypes.bool,
 };

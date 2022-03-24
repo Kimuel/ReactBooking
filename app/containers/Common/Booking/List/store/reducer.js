@@ -24,7 +24,7 @@ export const BookingListPropTypes = {
       guestsName: PropTypes.arrayOf(PropTypes.string),
       bookingDate: PropTypes.any,
       bookingTimeStart: PropTypes.any,
-      bookingTimeEnd: PropTypes.any,
+      duration: PropTypes.number,
     }),
   ),
   rooms: PropTypes.arrayOf(

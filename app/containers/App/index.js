@@ -10,6 +10,7 @@ import paths from 'utils/paths';
 
 import BookingPage from 'containers/BookingPage/Loadable';
 import BookingDetailsPage from 'containers/BookingDetailsPage/Loadable';
+import BookingRoomPage from 'containers/BookingRoomPage/Loadable';
 
 import '../../css/style.css';
 
@@ -26,6 +27,10 @@ const App = () => {
     {
       path: paths.bookingDetails,
       element: <BookingDetailsPage />,
+    },
+    {
+      path: paths.bookingRoom,
+      element: <BookingRoomPage />,
     },
   ];
 
