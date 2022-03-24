@@ -24,6 +24,7 @@ File Structure
       - helpers - helper functions
       - utils - utilities for the application (e.g. constants, paths, theme)
       - app.js - entry point
+      - json - mock data
       - configureStore.js
       - i18n.js
       - index.html
@@ -35,6 +36,10 @@ File Structure
     - jest.config.json
     - .prettierrc
     - .eslintrc.js
+
+Mock Data
+    - app/json/schedules.json
+    - app/json/rooms.json
 
 How to run:
   - npm install
