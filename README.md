@@ -48,5 +48,5 @@ How to run:
   - npm run lint:eslint:fix
 
 Note:
- - This code uses react-boilerplate template starter kit and update all of its packages.
+ - This code uses react-boilerplate template starter kit and I update all of its packages.
  - There`s no unit test yet for the components (Pending)
