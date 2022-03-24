@@ -47,6 +47,7 @@ import { loadBookingList } from './store/actions';
 import {
   makeSelectBookingList,
   makeSelectBookingRooms,
+  makeSelectBookingListLoaded,
   makeSelectBookingListLoading,
 } from './store/selectors';
 import BookingListReducer, {
@@ -66,6 +67,7 @@ const BookingList = ({
   bookingList,
   rooms,
   loading,
+  loaded,
 }) => {
   // Inject Reducer/Saga
   useInjectReducer({ key: KEY, reducer: BookingListReducer });
@@ -79,9 +81,9 @@ const BookingList = ({
     initialState.bookingList,
   );
 
-  // Load List if empty
+  // Load List if not loaded
   useEffect(() => {
-    if (bookingList.length === 0) {
+    if (!loaded) {
       actionLoadBookingList();
     }
   }, []);
@@ -242,18 +244,15 @@ const BookingList = ({
             values: { guestsName },
           },
         }) =>
-          useMemo(
-            () => (
-              <Stack direction="row" alignItems="center" flexWrap="wrap">
-                {guestsName.map((guest) => (
-                  <StackItem key={guest}>
-                    <Chip label={guest} size="small" color="default" />
-                  </StackItem>
-                ))}
-              </Stack>
-            ),
-            [],
-          ),
+          useMemo(() => (
+            <Stack direction="row" alignItems="center" flexWrap="wrap">
+              {guestsName.map((guest) => (
+                <StackItem key={guest}>
+                  <Chip label={guest} size="small" color="default" />
+                </StackItem>
+              ))}
+            </Stack>
+          )),
         minWidth: 230,
       },
       {
@@ -281,10 +280,10 @@ const BookingList = ({
         accessor: 'duration',
         Cell: ({
           row: {
-            values: { duraton, bookingTimeStart },
+            values: { duration, bookingTimeStart },
           },
         }) => {
-          if (duraton === bookingDuration.HOUR) {
+          if (duration === bookingDuration.HOUR) {
             return moment(bookingTimeStart).add(1, 'h').format(TIME_FORMAT);
           }
 
@@ -332,7 +331,6 @@ const BookingList = ({
                 </Tooltip>
               </BookingDeleteButton>
             </>,
-            [],
           ),
         minWidth: 150,
       },
@@ -437,12 +435,14 @@ BookingList.propTypes = {
   actionLoadBookingList: PropTypes.func,
   bookingList: BookingListPropTypes.bookingList,
   rooms: BookingListPropTypes.rooms,
+  loaded: BookingListPropTypes.loaded,
   loading: BookingListPropTypes.loading,
 };
 
 const mapStateToProps = createStructuredSelector({
   bookingList: makeSelectBookingList(),
   rooms: makeSelectBookingRooms(),
+  loaded: makeSelectBookingListLoaded(),
   loading: makeSelectBookingListLoading(),
 });
 

@@ -33,6 +33,7 @@ const BookingDeleteButton = ({
   actionUpdateBookingListField,
   bookingList,
   children,
+  redirect,
   id,
   ...rest
 }) => {
@@ -61,12 +62,14 @@ const BookingDeleteButton = ({
 
     handleClose();
 
-    // redirect to list
-    const urlParams = new URLSearchParams(location.search);
-    navigate({
-      pathname: paths.bookingList,
-      search: `?${urlParams}`,
-    });
+    if (redirect) {
+      // redirect to list
+      const urlParams = new URLSearchParams(location.search);
+      navigate({
+        pathname: paths.bookingList,
+        search: `?${urlParams}`,
+      });
+    }
   };
 
   return (
@@ -105,7 +108,12 @@ const BookingDeleteButton = ({
   );
 };
 
+BookingDeleteButton.defaultProps = {
+  redirect: true,
+};
+
 BookingDeleteButton.propTypes = {
+  redirect: PropTypes.bool,
   actionUpdateBookingListField: PropTypes.func,
   bookingList: BookingListPropTypes.bookingList,
   children: PropTypes.oneOfType([

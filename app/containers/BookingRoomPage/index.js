@@ -29,12 +29,7 @@ import Header from 'containers/Common/Header/Loadable';
 import BookingRoom from 'containers/Common/Booking/Room/Loadable';
 
 import KEY from 'containers/Common/Booking/List/store/constants';
-import { loadBookingList } from 'containers/Common/Booking/List/store/actions';
-import {
-  makeSelectBookingList,
-  makeSelectBookingRooms,
-  makeSelectBookingListLoading,
-} from 'containers/Common/Booking/List/store/selectors';
+import { makeSelectBookingRooms } from 'containers/Common/Booking/List/store/selectors';
 import BookingListReducer, {
   BookingListPropTypes,
 } from 'containers/Common/Booking/List/store/reducer';
@@ -102,17 +97,9 @@ BookingRoomPage.propTypes = {
 };
 
 const mapStateToProps = createStructuredSelector({
-  bookingList: makeSelectBookingList(),
   rooms: makeSelectBookingRooms(),
-  loading: makeSelectBookingListLoading(),
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actionLoadBookingList: () => dispatch(loadBookingList()),
-  };
-}
-
-const withConnect = connect(mapStateToProps, mapDispatchToProps);
+const withConnect = connect(mapStateToProps, null);
 
 export default compose(withConnect)(BookingRoomPage);

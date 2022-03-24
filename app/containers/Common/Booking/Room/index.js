@@ -50,6 +50,7 @@ import KEY from '../List/store/constants';
 import { loadBookingList } from '../List/store/actions';
 import {
   makeSelectBookingList,
+  makeSelectBookingListLoaded,
   makeSelectBookingRooms,
   makeSelectBookingListLoading,
 } from '../List/store/selectors';
@@ -71,6 +72,7 @@ const BookingRoom = ({
   roomName,
   rooms,
   loading,
+  loaded,
 }) => {
   // Inject Reducer/Saga
   useInjectReducer({ key: KEY, reducer: BookingListReducer });
@@ -84,9 +86,9 @@ const BookingRoom = ({
     initialState.bookingList,
   );
 
-  // Load List if empty
+  // Load List if not loaded
   useEffect(() => {
-    if (bookingList.length === 0) {
+    if (!loaded) {
       actionLoadBookingList();
     }
   }, []);
@@ -217,18 +219,15 @@ const BookingRoom = ({
             values: { guestsName },
           },
         }) =>
-          useMemo(
-            () => (
-              <Stack direction="row" alignItems="center" flexWrap="wrap">
-                {guestsName.map((guest) => (
-                  <StackItem key={guest}>
-                    <Chip label={guest} size="small" color="default" />
-                  </StackItem>
-                ))}
-              </Stack>
-            ),
-            [],
-          ),
+          useMemo(() => (
+            <Stack direction="row" alignItems="center" flexWrap="wrap">
+              {guestsName.map((guest) => (
+                <StackItem key={guest}>
+                  <Chip label={guest} size="small" color="default" />
+                </StackItem>
+              ))}
+            </Stack>
+          )),
         minWidth: 250,
       },
       {
@@ -287,7 +286,7 @@ const BookingRoom = ({
                   <EditIcon />
                 </IconButton>
               </Tooltip>
-              <BookingDeleteButton id={id}>
+              <BookingDeleteButton redirect={false} id={id}>
                 <Tooltip
                   title={intl.formatMessage(messages.tableActionsDelete)}
                 >
@@ -297,7 +296,6 @@ const BookingRoom = ({
                 </Tooltip>
               </BookingDeleteButton>
             </>,
-            [],
           ),
         minWidth: 120,
       },
@@ -380,12 +378,14 @@ BookingRoom.propTypes = {
   actionLoadBookingList: PropTypes.func,
   bookingList: BookingListPropTypes.bookingList,
   rooms: BookingListPropTypes.rooms,
+  loaded: BookingListPropTypes.loaded,
   loading: BookingListPropTypes.loading,
 };
 
 const mapStateToProps = createStructuredSelector({
   bookingList: makeSelectBookingList(),
   rooms: makeSelectBookingRooms(),
+  loaded: makeSelectBookingListLoaded(),
   loading: makeSelectBookingListLoading(),
 });
 

@@ -1,0 +1,22 @@
+[
+    {
+      "id": 1,
+      "name": "Meeting Room"
+    },
+    {
+      "id": 2,
+      "name": "Reception"
+    },
+    {
+      "id": 3,
+      "name": "Recording Room"
+    },
+    {
+      "id": 4,
+      "name": "Common Room"
+    },
+    {
+      "id": 5,
+      "name": "IT Room"
+    }
+]

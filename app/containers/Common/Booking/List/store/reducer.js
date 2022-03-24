@@ -12,6 +12,7 @@ import { UPDATE_BOOKING_LIST_FIELD, RESET_BOOKING_LIST } from './constants';
 export const initialState = {
   bookingList: [],
   rooms: [],
+  loaded: false,
   loading: false,
 };
 
@@ -33,6 +34,7 @@ export const BookingListPropTypes = {
       name: PropTypes.string,
     }),
   ),
+  loaded: PropTypes.bool,
   loading: PropTypes.bool,
 };
 

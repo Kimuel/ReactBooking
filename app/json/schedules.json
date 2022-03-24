@@ -1,0 +1,161 @@
+[{
+	"id": 1,
+	"roomId": 3,
+	"hostName": "Host 1",
+	"guestsName": ["Guest 1"],
+	"bookingDate": "2022-03-30T13:21:34",
+	"bookingTimeStart": "2022-03-30T12:00:00",
+	"duration": 2
+}, {
+	"id": 2,
+	"roomId": 1,
+	"hostName": "Host 2",
+	"guestsName": ["Guest 2"],
+	"bookingDate": "2022-03-26T13:54:06",
+	"bookingTimeStart": "2022-03-26T16:00:00",
+	"duration": 1
+}, {
+	"id": 3,
+	"roomId": 1,
+	"hostName": "Host 3",
+	"guestsName": ["Guest 3"],
+	"bookingDate": "2022-03-10T07:56:49",
+	"bookingTimeStart": "2022-03-10T11:00:00",
+	"duration": 1
+}, {
+	"id": 4,
+	"roomId": 3,
+	"hostName": "Host 4",
+	"guestsName": ["Guest 4"],
+	"bookingDate": "2022-03-15T13:10:29",
+	"bookingTimeStart": "2022-03-15T16:00:00",
+	"duration": 1
+}, {
+	"id": 5,
+	"roomId": 5,
+	"hostName": "Host 5",
+	"guestsName": ["Guest 5"],
+	"bookingDate": "2022-03-04T10:24:25",
+	"bookingTimeStart": "2022-03-04T10:00:00",
+	"duration": 2
+}, {
+	"id": 6,
+	"roomId": 5,
+	"hostName": "Host 6",
+	"guestsName": ["Guest 6"],
+	"bookingDate": "2022-03-09T08:39:29",
+	"bookingTimeStart": "2022-03-09T10:00:00",
+	"duration": 1
+}, {
+	"id": 7,
+	"roomId": 5,
+	"hostName": "Host 7",
+	"guestsName": ["Guest 7"],
+	"bookingDate": "2022-03-24T08:53:22",
+	"bookingTimeStart": "2022-03-24T09:00:00",
+	"duration": 2
+}, {
+	"id": 8,
+	"roomId": 5,
+	"hostName": "Host 8",
+	"guestsName": ["Guest 8"],
+	"bookingDate": "2022-03-17T15:13:26",
+	"bookingTimeStart": "2022-03-17T10:00:00",
+	"duration": 1
+}, {
+	"id": 9,
+	"roomId": 3,
+	"hostName": "Host 9",
+	"guestsName": ["Guest 9"],
+	"bookingDate": "2022-03-16T02:15:35",
+	"bookingTimeStart": "2022-03-16T11:00:00",
+	"duration": 2
+}, {
+	"id": 10,
+	"roomId": 5,
+	"hostName": "Host 10",
+	"guestsName": ["Guest 10"],
+	"bookingDate": "2022-03-08T14:33:32",
+	"bookingTimeStart": "2022-03-08T11:00:00",
+	"duration": 2
+}, {
+	"id": 11,
+	"roomId": 3,
+	"hostName": "Host 11",
+	"guestsName": ["Guest 11"],
+	"bookingDate": "2022-03-15T15:19:45",
+	"bookingTimeStart": "2022-03-15T14:00:00",
+	"duration": 1
+}, {
+	"id": 12,
+	"roomId": 2,
+	"hostName": "Host 12",
+	"guestsName": ["Guest 12"],
+	"bookingDate": "2022-03-05T00:43:12",
+	"bookingTimeStart": "2022-03-05T15:00:00",
+	"duration": 1
+}, {
+	"id": 13,
+	"roomId": 4,
+	"hostName": "Host 13",
+	"guestsName": ["Guest 13"],
+	"bookingDate": "2022-03-21T05:57:22",
+	"bookingTimeStart": "2022-03-21T10:00:00",
+	"duration": 2
+}, {
+	"id": 14,
+	"roomId": 2,
+	"hostName": "Host 14",
+	"guestsName": ["Guest 14"],
+	"bookingDate": "2022-03-11T01:54:00",
+	"bookingTimeStart": "2022-03-11T15:00:00",
+	"duration": 2
+}, {
+	"id": 15,
+	"roomId": 3,
+	"hostName": "Host 15",
+	"guestsName": ["Guest 15"],
+	"bookingDate": "2022-03-22T11:02:28",
+	"bookingTimeStart": "2022-03-22T11:00:00",
+	"duration": 1
+}, {
+	"id": 16,
+	"roomId": 2,
+	"hostName": "Host 16",
+	"guestsName": ["Guest 16"],
+	"bookingDate": "2022-03-13T23:39:46",
+	"bookingTimeStart": "2022-03-13T16:00:00",
+	"duration": 1
+}, {
+	"id": 17,
+	"roomId": 5,
+	"hostName": "Host 17",
+	"guestsName": ["Guest 17"],
+	"bookingDate": "2022-03-28T08:15:30",
+	"bookingTimeStart": "2022-03-28T09:00:00",
+	"duration": 1
+}, {
+	"id": 18,
+	"roomId": 1,
+	"hostName": "Host 18",
+	"guestsName": ["Guest 18"],
+	"bookingDate": "2022-03-01T12:12:37",
+	"bookingTimeStart": "2022-03-01T14:00:00",
+	"duration": 1
+}, {
+	"id": 19,
+	"roomId": 3,
+	"hostName": "Host 19",
+	"guestsName": ["Guest 19"],
+	"bookingDate": "2022-03-05T23:58:38",
+	"bookingTimeStart": "2022-03-05T12:00:00",
+	"duration": 1
+}, {
+	"id": 20,
+	"roomId": 3,
+	"hostName": "Host 20",
+	"guestsName": ["Guest 20"],
+	"bookingDate": "2022-03-19T18:22:43",
+	"bookingTimeStart": "2022-03-19T14:00:00",
+	"duration": 2
+}]

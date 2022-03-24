@@ -39,7 +39,6 @@ import FieldBookingTimeTo from 'containers/Common/Fields/Booking/TimeTo';
 import BookingDetailsSchema, { getInitialValues } from './form/schema';
 import KEY_DETAILS from './store/constants';
 import {
-  loadBookingDetails,
   updateBookingDetailsField,
   resetBookingDetails,
 } from './store/actions';
@@ -54,7 +53,10 @@ import BookingDetailsReducer, {
 
 import KEY_LIST from '../List/store/constants';
 import { loadBookingList, updateBookingListField } from '../List/store/actions';
-import { makeSelectBookingList } from '../List/store/selectors';
+import {
+  makeSelectBookingList,
+  makeSelectBookingListLoaded,
+} from '../List/store/selectors';
 import BookingListReducer, {
   BookingListPropTypes,
 } from '../List/store/reducer';
@@ -72,6 +74,7 @@ const BookingDetails = ({
   id,
   isNew,
   loading,
+  loaded,
 }) => {
   // Inject Reducer/Saga
   useInjectReducer({ key: KEY_DETAILS, reducer: BookingDetailsReducer });
@@ -96,7 +99,7 @@ const BookingDetails = ({
 
   // Load List if not loaded
   useEffect(() => {
-    if (bookingList.length === 0) {
+    if (!loaded) {
       actionLoadBookingList();
     }
   }, []);
@@ -239,7 +242,7 @@ const BookingDetails = ({
         <FormProvider {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
             <SectionContainer>
-              <FieldBookingRoom disabled={loading || id} fullWidth />
+              <FieldBookingRoom disabled={loading || id > 0} fullWidth />
             </SectionContainer>
 
             <SectionContainer>
@@ -252,20 +255,20 @@ const BookingDetails = ({
 
             <SectionContainer>
               <FieldBookingDate
-                DatePickerProps={{ disabled: loading || id }}
+                DatePickerProps={{ disabled: loading || id > 0 }}
                 fullWidth
               />
             </SectionContainer>
 
             <SectionContainer>
               <FieldBookingTimeFrom
-                DatePickerProps={{ disabled: loading || id }}
+                DatePickerProps={{ disabled: loading || id > 0 }}
                 fullWidth
               />
             </SectionContainer>
 
             <SectionContainer>
-              <FieldBookingTimeTo disabled={loading || id} fullWidth />
+              <FieldBookingTimeTo disabled={loading || id > 0} fullWidth />
             </SectionContainer>
 
             <Button
@@ -288,25 +291,25 @@ BookingDetails.propTypes = {
   id: PropTypes.number,
   isNew: PropTypes.bool,
   actionResetBookingDetails: PropTypes.func,
-  actionLoadBookingDetails: PropTypes.func,
   actionLoadBookingList: PropTypes.func,
   actionUpdateBookingDetailsField: PropTypes.func,
   actionUpdateBookingListField: PropTypes.func,
   bookingDetails: BookingDetailsPropTypes.bookingDetails,
   loading: BookingDetailsPropTypes.loading,
+  loaded: BookingListPropTypes.loaded,
   bookingList: BookingListPropTypes.bookingList,
 };
 
 const mapStateToProps = createStructuredSelector({
   bookingDetails: makeSelectBookingDetails(),
   bookingList: makeSelectBookingList(),
+  loaded: makeSelectBookingListLoaded(),
   loading: makeSelectBookingDetailsLoading(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     actionLoadBookingList: () => dispatch(loadBookingList()),
-    actionLoadBookingDetails: (id) => dispatch(loadBookingDetails(id)),
     actionUpdateBookingDetailsField: (field, value) =>
       dispatch(updateBookingDetailsField(field, value)),
     actionUpdateBookingListField: (field, value) =>

@@ -25,9 +25,16 @@ const makeSelectBookingRooms = () =>
 const makeSelectBookingListLoading = () =>
   createSelector(selectBookingList, (state) => state.loading);
 
+/**
+ * Select loaded
+ */
+const makeSelectBookingListLoaded = () =>
+  createSelector(selectBookingList, (state) => state.loaded);
+
 export {
   selectBookingList,
   makeSelectBookingList,
   makeSelectBookingRooms,
+  makeSelectBookingListLoaded,
   makeSelectBookingListLoading,
 };

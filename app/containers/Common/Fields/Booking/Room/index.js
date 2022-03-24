@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -31,7 +32,7 @@ export const schemaBookingRoom = yup
   .number()
   .typeError(<FormattedMessage {...messages.validationRequired} />);
 
-export const FieldBookingRoom = ({ rooms, ...rest }) => {
+export const FieldBookingRoom = ({ rooms, disabled, fullWidth }) => {
   useInjectReducer({ key: KEY, reducer: BookingListReducer });
   const intl = useIntl();
   const { control } = useFormContext();
@@ -50,7 +51,8 @@ export const FieldBookingRoom = ({ rooms, ...rest }) => {
           onChange={onChange}
           error={Boolean(error)}
           helperText={error?.message}
-          {...rest}
+          disabled={disabled}
+          fullWidth={fullWidth}
         >
           {rooms.map((room) => (
             <MenuItem key={room.name} value={room.id}>
@@ -64,6 +66,8 @@ export const FieldBookingRoom = ({ rooms, ...rest }) => {
 };
 
 FieldBookingRoom.propTypes = {
+  fullWidth: PropTypes.bool,
+  disabled: PropTypes.bool,
   rooms: BookingListPropTypes.rooms,
 };
 
@@ -71,6 +75,6 @@ const mapStateToProps = createStructuredSelector({
   rooms: makeSelectBookingRooms(),
 });
 
-const withConnect = connect(mapStateToProps, null);
+const withConnect = connect(mapStateToProps);
 
 export default compose(withConnect)(FieldBookingRoom);
