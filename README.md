@@ -49,4 +49,5 @@ How to run:
 
 Note:
  - This code uses react-boilerplate template starter kit and I update all of its packages.
- - There`s no unit test yet for the components (Pending)
+ - There`s no unit test yet for the components
+ - Ready to test
